@@ -1,11 +1,17 @@
 <script lang="ts">
-    import { FirebaseError } from "firebase/app";
+  import { FirebaseError } from "firebase/app";
   import FirebaseAuth from "./utilities/FirebaseAuth";
   import ViewLogin from './views/Login.svelte';
-    import { AuthErrorCodes, type User } from "firebase/auth";
+  import ViewDashboard from './views/Dashboard.svelte';
+  import { AuthErrorCodes, type User } from "firebase/auth";
+    import createUser from "./api/createUser";
 
   const auth = FirebaseAuth.Default();
+
+  enum AppView {Dashboard, ManageLists, Email}
+
   let user: User | null = null;
+  let view: AppView = AppView.Dashboard;
 
   async function onLogin(e: CustomEvent<{email: string, password: string}>): Promise<void> {
     const [email, password] = [e.detail.email, e.detail.password];
@@ -35,6 +41,8 @@
 
   async function onSignup(e: CustomEvent<{email: string, password: string}>): Promise<void> {
     const [email, password] = [e.detail.email, e.detail.password];
+
+    // Firebase user creation.
     try {
       await auth.signup(email, password);
     } catch (e) {
@@ -50,6 +58,9 @@
       }
     }
 
+    // Server user creation.
+    await createUser(email);
+
     user = auth.user;
     console.log('Successful creation.');
   }
@@ -58,9 +69,7 @@
 <main>
   {#if !user}
     <ViewLogin on:login={onLogin} on:signup={onSignup} />
+  {:else if view === AppView.Dashboard}
+    <ViewDashboard />
   {/if}
 </main>
-
-<style>
-
-</style>

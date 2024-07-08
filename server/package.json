@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "@prisma/client": "^5.16.1",
     "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "prisma": "^5.16.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -10,6 +12,7 @@
     "typescript": "^5.5.3"
   },
   "scripts": {
-    "start": "bun --watch server.ts"
+    "start": "bun --watch server.ts",
+    "psql": "psql \"postgresql://wyrmmail:rawrmeansiloveyou@localhost:10002/wyrmmail\""
   }
 }

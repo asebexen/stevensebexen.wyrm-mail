@@ -29,6 +29,7 @@ class FirebaseAuth {
     this.user = credential.user;
   }
 
+  // Throws firebase auth errors.
   async signup(email: string, password: string) {
     const credential = await createUserWithEmailAndPassword(getAuth(this.app), email, password);
     this.user = credential.user;
